@@ -89,3 +89,5 @@ pipeline {
             junit 'TestResults/*.xml'
         }
     }
+
+}
