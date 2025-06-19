@@ -28,8 +28,13 @@ pipeline {
             steps {
                 bat '''
                     echo Attempting to uninstall Google Chrome (if installed)
-                    choco uninstall googlechrome -y || echo "Chrome not installed, skipping uninstall"
+                    choco uninstall googlechrome -y
+                    if %errorlevel% neq 0 (
+                        echo Chrome not installed or failed to uninstall. Continuing...
+                        exit /b 0
+                    )
                 '''
+
             }
         }
 
