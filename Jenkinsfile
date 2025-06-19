@@ -61,16 +61,17 @@ pipeline {
                 bat 'dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults.trx"'
             }
         }
+        stage('Convert TRX to JUnit XML') {
+            steps {
+                bat '''
+                    dotnet tool install --global trx2junit
+                    trx2junit TestResults\\TestResults.trx
+                '''
+        }
     }
 
-    stage('Convert TRX to JUnit XML') {
-    steps {
-        bat '''
-            dotnet tool install --global trx2junit
-            trx2junit TestResults\\TestResults.trx
-        '''
-     }
     }
+
 
     post {
         always {
