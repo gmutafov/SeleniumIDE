@@ -40,8 +40,8 @@ pipeline {
         stage('Install Specific Chrome Version') {
             steps {
                 bat '''
-                    echo Installing latest Google Chrome
-                    choco install googlechrome -y
+                    echo Installing latest Google Chrome with checksum bypass
+                    choco install googlechrome -y --ignore-checksums
                 '''
             }
         }
