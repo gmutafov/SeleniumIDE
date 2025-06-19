@@ -63,9 +63,18 @@ pipeline {
         }
     }
 
+    stage('Convert TRX to JUnit XML') {
+    steps {
+        bat '''
+            dotnet tool install --global trx2junit
+            trx2junit TestResults\\TestResults.trx
+        '''
+     }
+    }
+
     post {
         always {
-            junit '**/TestResults/*.trx'
-        }
+            junit '**/TestResults/*.xml'
+     }
     }
-}
+
