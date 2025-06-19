@@ -77,4 +77,4 @@ pipeline {
             junit '**/TestResults/*.xml'
      }
     }
-
+}
