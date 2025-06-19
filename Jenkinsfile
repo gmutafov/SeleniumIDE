@@ -64,7 +64,7 @@ pipeline {
             steps {
                 bat '''
                     mkdir TestResults
-                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults\\TestResults.trx"
+                    dotnet test YourSolution.sln --logger "trx;LogFileName=TestResults.trx" --results-directory TestResults
                 '''
             }
         }
@@ -72,6 +72,11 @@ pipeline {
         stage('Convert TRX to JUnit XML') {
             steps {
                 bat '''
+                    if exist TestResults\\TestResults.trx (
+                        trx2junit TestResults\\TestResults.trx
+                    ) else (
+                        echo "No TRX file found. Skipping conversion."
+                    )
                     echo Installing trx2junit globally
                     dotnet tool install --global trx2junit || echo "Already installed"
 
