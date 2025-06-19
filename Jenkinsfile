@@ -27,11 +27,12 @@ pipeline {
         stage('Uninstall Current Chrome') {
             steps {
                 bat '''
-                    echo Uninstalling current Google Chrome
-                    choco uninstall googlechrome -y
+                    echo Attempting to uninstall Google Chrome (if installed)
+                    choco uninstall googlechrome -y || echo "Chrome not installed, skipping uninstall"
                 '''
             }
         }
+
 
         stage('Install Specific Chrome Version') {
             steps {
@@ -58,24 +59,33 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults.trx"'
+                bat '''
+                    mkdir TestResults
+                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults\\TestResults.trx"
+                '''
             }
         }
+
         stage('Convert TRX to JUnit XML') {
             steps {
                 bat '''
-                    dotnet tool install --global trx2junit
+                    echo Installing trx2junit globally
+                    dotnet tool install --global trx2junit || echo "Already installed"
+
+                    echo Converting TRX to JUnit XML
                     trx2junit TestResults\\TestResults.trx
+
+                    dir TestResults
                 '''
+            }
         }
-    }
+
 
     }
 
 
     post {
         always {
-            junit '**/TestResults/*.xml'
-     }
+            junit 'TestResults/*.xml'
+        }
     }
-}
