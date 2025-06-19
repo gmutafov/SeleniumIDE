@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        CHROME_VERSION = '137.0.7151.7000'
-        CHROMEDRIVER_VERSION = '137.0.7151.7000'
+        CHROME_VERSION = '137.0.7151.119'
+        CHROMEDRIVER_VERSION = '137.0.7151.119'
         CHROME_INSTALL_PATH = 'C:\\Program Files\\Google\\Chrome\\Application'
         CHROME_DRIVER_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chromedriver.exe'
     }
@@ -42,8 +42,8 @@ pipeline {
         stage('Install Specific Chrome Version') {
             steps {
                 bat '''
-                    echo Installing Google Chrome version %CHROME_VERSION%
-                    choco install googlechrome --version=%CHROME_VERSION% -y --allow-downgrade --ignore-checksums
+                    echo Installing latest Google Chrome
+                    choco install googlechrome -y
                 '''
             }
         }
