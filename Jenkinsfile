@@ -64,7 +64,7 @@ pipeline {
             steps {
                 bat '''
                     mkdir TestResults
-                    dotnet test YourSolution.sln --logger "trx;LogFileName=TestResults.trx" --results-directory TestResults
+                    dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults.trx" --results-directory TestResults
                 '''
             }
         }
